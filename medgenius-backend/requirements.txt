@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+openai-whisper
+yt-dlp
+ollama
+torch
+torchaudio
+ffmpeg-python
+aiofiles
+httpx

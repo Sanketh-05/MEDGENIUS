@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedGenius — Tools, Technologies & Libraries Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --primary: #0d9373;
+    --primary-light: #e6f7f2;
+    --primary-dark: #07654f;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --dark: #1a1a2e;
+    --text: #2d3748;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --bg: #ffffff;
+    --code-bg: #f8fafc;
+    --table-stripe: #f7fafc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 11pt;
+  }
+
+  /* ── Page container ─────────────────────────────── */
+  .page {
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 15mm 20mm;
+  }
+
+  /* ── Cover page ─────────────────────────────────── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0a0f1a 0%, #0d2137 50%, #0a2e1f 100%);
+    color: white;
+    padding: 40mm 20mm;
+    page-break-after: always;
+  }
+  .cover-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border: 1px solid rgba(0,230,180,0.4);
+    border-radius: 20px;
+    font-size: 10pt;
+    color: #00e6b4;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  .cover h1 {
+    font-size: 32pt;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00e6b4, #00b4d8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .cover h2 {
+    font-size: 16pt;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 40px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+  }
+  .cover-meta-item {
+    text-align: center;
+  }
+  .cover-meta-item .label {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+  }
+  .cover-meta-item .value {
+    font-size: 11pt;
+    color: #00e6b4;
+    font-weight: 600;
+  }
+
+  /* ── Section headers ────────────────────────────── */
+  h1.section-title {
+    font-size: 20pt;
+    font-weight: 800;
+    color: var(--dark);
+    margin: 30px 0 8px 0;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--primary);
+    page-break-after: avoid;
+  }
+  h2.tool-title {
+    font-size: 14pt;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 24px 0 6px 0;
+    padding: 6px 12px;
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    border-radius: 0 6px 6px 0;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--text);
+    margin: 16px 0 6px 0;
+  }
+
+  /* ── Tables ─────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 16px 0;
+    font-size: 9.5pt;
+  }
+  th {
+    background: var(--dark);
+    color: white;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 9pt;
+  }
+  td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  table.info-table td:first-child {
+    font-weight: 600;
+    color: var(--text-light);
+    width: 130px;
+  }
+  table.info-table td:last-child { font-weight: 500; }
+
+  /* ── Code blocks ────────────────────────────────── */
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5pt;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 8px 0 14px 0;
+    page-break-inside: avoid;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9pt;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--primary-dark);
+    border: 1px solid var(--border);
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    border: none;
+    color: inherit;
+  }
+  .kw { color: #c084fc; }
+  .str { color: #86efac; }
+  .cm { color: #64748b; }
+  .fn { color: #38bdf8; }
+  .num { color: #fbbf24; }
+
+  /* ── Bullet lists ───────────────────────────────── */
+  ul {
+    margin: 6px 0 12px 20px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 4px;
+    line-height: 1.6;
+  }
+  li strong { color: var(--primary-dark); }
+
+  /* ── Paragraphs ─────────────────────────────────── */
+  p { margin: 6px 0 10px 0; }
+  .label { font-weight: 700; color: var(--text); }
+
+  /* ── Callout / note box ─────────────────────────── */
+  .note {
+    background: #fffbeb;
+    border: 1px solid #fbbf24;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 9.5pt;
+  }
+
+  /* ── TOC ─────────────────────────────────────────── */
+  .toc {
+    page-break-after: always;
+  }
+  .toc h1 { margin-bottom: 16px; }
+  .toc table td { padding: 6px 10px; }
+  .toc table td:first-child { width: 30px; text-align: center; font-weight: 700; color: var(--primary); }
+
+  /* ── Matrix table (final) ────────────────────────── */
+  .matrix-table th { font-size: 8pt; padding: 6px 8px; }
+  .matrix-table td { font-size: 8.5pt; padding: 5px 8px; }
+  .matrix-table td:first-child { text-align: center; font-weight: 700; color: var(--primary); }
+
+  /* ── Separator ──────────────────────────────────── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* ── Footer ─────────────────────────────────────── */
+  .doc-footer {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 8.5pt;
+    padding: 20px 0;
+    border-top: 2px solid var(--primary);
+    margin-top: 30px;
+  }
+
+  /* ── Print styles ───────────────────────────────── */
+  @media print {
+    body { font-size: 10pt; }
+    .page { padding: 10mm 15mm; max-width: none; }
+    .cover { min-height: auto; padding: 60px 20px; }
+    .cover h1 { 
+      -webkit-text-fill-color: #00e6b4; 
+      color: #00e6b4;
+    }
+    .no-print { display: none !important; }
+    h1.section-title { page-break-after: avoid; }
+    h2.tool-title { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+    pre { page-break-inside: avoid; }
+    .page-break { page-break-before: always; }
+  }
+
+  /* ── Print button ───────────────────────────────── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #0d9373, #07654f);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13pt;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(13,147,115,0.4);
+    transition: transform 0.2s;
+  }
+  .print-btn:hover { transform: translateY(-2px); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ PRINT BUTTON ════════════════ -->
+<button class="print-btn no-print" onclick="window.print()">📄 Save as PDF</button>
+
+<!-- ═══════════════ COVER PAGE ══════════════════ -->
+<div class="cover">
+  <div class="cover-badge">Technical Documentation</div>
+  <h1>MedGenius</h1>
+  <h2>Tools, Technologies & Libraries — Complete Reference</h2>
+  <p style="color:rgba(255,255,255,0.5); max-width:500px; font-size:10pt; margin-top: 10px;">
+    A comprehensive presentation of every tool used in the MedGenius AI-Powered Medical Learning Platform — where it is used and why it was chosen.
+  </p>
+  <div class="cover-meta" style="margin-top:40px;">
+    <div class="cover-meta-item">
+      <div class="label">Project</div>
+      <div class="value">MedGenius v1.0</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Total Tools</div>
+      <div class="value">26</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Date</div>
+      <div class="value">April 2026</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Type</div>
+      <div class="value">Reference Guide</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TABLE OF CONTENTS ═══════════ -->
+<div class="page toc">
+  <h1 class="section-title">Table of Contents</h1>
+  <table>
+    <thead><tr><th>#</th><th>Category</th><th>Tools Covered</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Frontend Framework & Build</td><td>React 19, Vite 7, @vitejs/plugin-react</td></tr>
+      <tr><td>2</td><td>UI & Styling</td><td>Vanilla CSS, CSS Custom Properties, Glassmorphism</td></tr>
+      <tr><td>3</td><td>Backend Framework & Server</td><td>FastAPI, Uvicorn, Pydantic</td></tr>
+      <tr><td>4</td><td>Firebase Services (BaaS)</td><td>Auth, Firestore, Storage, Hosting</td></tr>
+      <tr><td>5</td><td>AI / LLM Providers</td><td>Groq Cloud, HuggingFace, Ollama</td></tr>
+      <tr><td>6</td><td>Document Parsing</td><td>pdfjs-dist, mammoth.js, FileReader API</td></tr>
+      <tr><td>7</td><td>Data Visualization & Charting</td><td>Recharts, Chart.js, react-chartjs-2</td></tr>
+      <tr><td>8</td><td>PDF Export</td><td>jsPDF, html2canvas</td></tr>
+      <tr><td>9</td><td>HTTP & Networking</td><td>Fetch API, httpx, requests, CORS Middleware</td></tr>
+      <tr><td>10</td><td>State Management</td><td>React Context API, localStorage</td></tr>
+      <tr><td>11</td><td>Routing</td><td>Manual SPA routing (useState)</td></tr>
+      <tr><td>12</td><td>Python Backend Libraries</td><td>python-dotenv, python-multipart, threading</td></tr>
+      <tr><td>13</td><td>Development Tooling</td><td>concurrently</td></tr>
+      <tr><td>14</td><td>Complete Tool Matrix</td><td>All 26 tools in one table</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════ SECTION 1 ═══════════════════ -->
+<div class="page">
+  <h1 class="section-title">1. Frontend Framework & Build Tools</h1>
+
+  <!-- React -->
+  <h2 class="tool-title">1.1 React 19 (<code>react</code> + <code>react-dom</code>)</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>19.2.4</td></tr>
+    <tr><td>Package</td><td><code>react</code>, <code>react-dom</code></td></tr>
+    <tr><td>Type</td><td>UI Library</td></tr>
+  </table>
+
+  <h3>What it is</h3>
+  <p>React is a declarative, component-based JavaScript library for building user interfaces. Version 19 introduces automatic batching, concurrent rendering improvements, and streamlined ref handling.</p>
+
+  <h3>Where it is used</h3>
+  <p>React powers the <strong>entire frontend application</strong>. Every visual element the user sees is a React component.</p>
+  <table>
+    <thead><tr><th>File</th><th>How React Is Used</th></tr></thead>
+    <tbody>
+      <tr><td>main.jsx</td><td>Root <code>ReactDOM.createRoot()</code> render entry point</td></tr>
+      <tr><td>App.jsx</td><td>Root component — wraps in AuthProvider + ProgressProvider, state-based routing</td></tr>
+      <tr><td>AuthContext.jsx</td><td><code>createContext</code>, <code>useContext</code>, <code>useState</code>, <code>useEffect</code> for auth state</td></tr>
+      <tr><td>StudentProgressContext.jsx</td><td><code>createContext</code>, <code>useCallback</code>, <code>useRef</code> for debounced progress saves</td></tr>
+      <tr><td>16 page files in <code>src/pages/</code></td><td>Functional components with hooks</td></tr>
+      <tr><td>7 component files in <code>src/components/</code></td><td>Reusable shared UI components</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>Component-based architecture</strong> — each feature (Notes, Quiz, Flashcards, CDSS) is an independent component</li>
+    <li><strong>Hooks API</strong> — <code>useState</code>, <code>useEffect</code>, <code>useCallback</code>, <code>useRef</code>, <code>useContext</code> simplify state management</li>
+    <li><strong>Massive ecosystem</strong> — Firebase SDK, charting libraries, PDF tools all have React bindings</li>
+    <li><strong>Performance</strong> — React 19's automatic batching prevents unnecessary re-renders</li>
+  </ul>
+
+  <hr>
+
+  <!-- Vite -->
+  <h2 class="tool-title">1.2 Vite 7 (Build Tool & Dev Server)</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>7.3.1</td></tr>
+    <tr><td>Package</td><td><code>vite</code></td></tr>
+    <tr><td>Type</td><td>Build Tool + Dev Server</td></tr>
+  </table>
+
+  <h3>What it is</h3>
+  <p>Vite is a next-generation frontend build tool using native ES modules for lightning-fast startup and HMR.</p>
+
+  <h3>Where it is used</h3>
+  <table>
+    <thead><tr><th>File</th><th>How Vite Is Used</th></tr></thead>
+    <tbody>
+      <tr><td>vite.config.js</td><td>React plugin, dev server port (5173), auto-open browser</td></tr>
+      <tr><td>package.json</td><td><code>npm run dev</code> → <code>vite</code>, <code>npm run build</code> → <code>vite build</code></td></tr>
+      <tr><td>All src/utils/ files</td><td>Use <code>import.meta.env.VITE_*</code> for environment variables</td></tr>
+      <tr><td>fileParser.js</td><td>Vite's <code>?url</code> import for PDF.js worker bundling</td></tr>
+    </tbody>
+  </table>
+
+  <pre><code><span class="cm">// vite.config.js</span>
+<span class="kw">export default</span> <span class="fn">defineConfig</span>({
+  plugins: [<span class="fn">react</span>()],
+  server: { port: <span class="num">5173</span>, open: <span class="kw">true</span> },
+})</code></pre>
+
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>Speed</strong> — Dev server starts in < 300ms vs 10+ seconds with Webpack</li>
+    <li><strong>Native ES Modules</strong> — No bundling during development</li>
+    <li><strong>Environment variables</strong> — <code>import.meta.env.VITE_GROQ_API_KEY</code> keeps keys safe</li>
+    <li><strong>Optimized production build</strong> — Rollup under the hood for tree-shaking & minification</li>
+  </ul>
+
+  <hr>
+
+  <!-- plugin-react -->
+  <h2 class="tool-title">1.3 @vitejs/plugin-react</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>5.1.4</td></tr>
+    <tr><td>Package</td><td><code>@vitejs/plugin-react</code> (devDependency)</td></tr>
+  </table>
+  <p>Official Vite plugin for React. Adds JSX transform and React Fast Refresh. Referenced in <code>vite.config.js</code> as <code>plugins: [react()]</code>.</p>
+</div>
+
+<!-- ═══════════════ SECTION 2 ═══════════════════ -->
+<div class="page">
+  <h1 class="section-title">2. UI & Styling</h1>
+
+  <h2 class="tool-title">2.1 Vanilla CSS with CSS Custom Properties</h2>
+  <table class="info-table">
+    <tr><td>File</td><td>index.css (48,637 bytes)</td></tr>
+    <tr><td>Type</td><td>Pure CSS — no framework</td></tr>
+  </table>
+
+  <h3>What it is</h3>
+  <p>The entire application styling uses hand-written CSS with CSS Custom Properties for a cohesive dark-theme design system.</p>
+
+  <pre><code><span class="cm">/* CSS Variables for theming */</span>
+--bg-primary: <span class="str">#0a0f1a</span>;
+--accent-primary: <span class="str">#00e6b4</span>;
+--glass-bg: <span class="fn">rgba</span>(<span class="num">255, 255, 255, 0.05</span>);
+
+<span class="cm">/* Glassmorphism */</span>
+backdrop-filter: <span class="fn">blur</span>(<span class="num">12px</span>);
+background: <span class="fn">var</span>(--glass-bg);</code></pre>
+
+  <h3>Why vanilla CSS was chosen</h3>
+  <ul>
+    <li><strong>Full control</strong> — No framework abstractions; every pixel is intentional</li>
+    <li><strong>Performance</strong> — No runtime CSS-in-JS overhead; single file cached by browser</li>
+    <li><strong>Dark medical theme</strong> — Custom dark mode with mint-green accents for reduced eye strain</li>
+    <li><strong>Glassmorphism</strong> — Premium frosted-glass UI effects throughout</li>
+  </ul>
+</div>
+
+<!-- ═══════════════ SECTION 3 ═══════════════════ -->
+<div class="page page-break">
+  <h1 class="section-title">3. Backend Framework & Server</h1>
+
+  <h2 class="tool-title">3.1 FastAPI (Python Web Framework)</h2>
+  <table class="info-table">
+    <tr><td>Package</td><td><code>fastapi</code></td></tr>
+    <tr><td>Type</td><td>Async Python Web Framework</td></tr>
+  </table>
+
+  <h3>What it is</h3>
+  <p>FastAPI is a modern, high-performance Python web framework built on Starlette (ASGI) and Pydantic for automatic request validation and OpenAPI documentation.</p>
+
+  <h3>Where it is used</h3>
+  <table>
+    <thead><tr><th>File</th><th>How FastAPI Is Used</th></tr></thead>
+    <tbody>
+      <tr><td>main.py</td><td>Creates <code>FastAPI()</code> app, adds CORS middleware, registers routers</td></tr>
+      <tr><td>routers/lecture.py</td><td><code>APIRouter</code> for lecture processing endpoints</td></tr>
+      <tr><td>routers/anatomy.py</td><td><code>APIRouter</code> for <code>/api/anatomy/generate-image</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Features used</h3>
+  <ul>
+    <li><strong>APIRouter</strong> — Modular route grouping (lecture, anatomy)</li>
+    <li><strong>BaseModel (Pydantic)</strong> — Request body validation</li>
+    <li><strong>StreamingResponse</strong> — SSE for real-time job progress</li>
+    <li><strong>UploadFile</strong> — Multipart file upload handling</li>
+    <li><strong>Auto-generated Swagger docs</strong> at <code>/docs</code></li>
+  </ul>
+
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>Async support</strong> — Handles SSE streaming and concurrent requests</li>
+    <li><strong>Type safety</strong> — Pydantic auto-validates request bodies</li>
+    <li><strong>Auto-documentation</strong> — Free Swagger UI for API testing</li>
+    <li><strong>Performance</strong> — One of the fastest Python frameworks</li>
+  </ul>
+
+  <hr>
+
+  <h2 class="tool-title">3.2 Uvicorn (ASGI Server)</h2>
+  <table class="info-table">
+    <tr><td>Package</td><td><code>uvicorn[standard]</code></td></tr>
+    <tr><td>Type</td><td>ASGI Server</td></tr>
+  </table>
+  <p>Lightning-fast ASGI server that runs FastAPI. Used via: <code>uvicorn main:app --reload --port 8000</code>. The <code>--reload</code> flag enables auto-restart on code changes during development.</p>
+
+  <hr>
+
+  <h2 class="tool-title">3.3 Pydantic (Data Validation)</h2>
+  <table class="info-table">
+    <tr><td>Package</td><td><code>pydantic</code> (bundled with FastAPI)</td></tr>
+  </table>
+  <table>
+    <thead><tr><th>File</th><th>Pydantic Model</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>lecture.py</td><td><code>YoutubeRequest(BaseModel)</code></td><td>Validates YouTube URL</td></tr>
+      <tr><td>anatomy.py</td><td><code>AnatomyImageRequest(BaseModel)</code></td><td>Validates topic + HF API key</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════ SECTION 4 ═══════════════════ -->
+<div class="page page-break">
+  <h1 class="section-title">4. Firebase Services (BaaS)</h1>
+
+  <h2 class="tool-title">4.1 Firebase Authentication</h2>
+  <table class="info-table">
+    <tr><td>SDK Version</td><td>12.11.0</td></tr>
+    <tr><td>Type</td><td>Managed Authentication Service</td></tr>
+  </table>
+
+  <h3>Where it is used</h3>
+  <table>
+    <thead><tr><th>File</th><th>Firebase Auth Functions Used</th></tr></thead>
+    <tbody>
+      <tr><td>firebase.js</td><td><code>getAuth()</code>, <code>GoogleAuthProvider()</code>, <code>setPersistence()</code></td></tr>
+      <tr><td>AuthContext.jsx</td><td><code>createUserWithEmailAndPassword</code>, <code>signInWithEmailAndPassword</code>, <code>signInWithPopup</code>, <code>signOut</code>, <code>onAuthStateChanged</code></td></tr>
+      <tr><td>AuthPage.jsx</td><td>Login form, signup form, Google sign-in button, password reset UI</td></tr>
+    </tbody>
+  </table>
+
+  <pre><code><span class="cm">// firebase.js — Session persistence</span>
+<span class="fn">setPersistence</span>(auth, browserSessionPersistence);
+
+<span class="cm">// AuthContext.jsx — Auth state listener</span>
+<span class="fn">onAuthStateChanged</span>(auth, <span class="kw">async</span> (firebaseUser) => {
+    <span class="kw">const</span> fsProfile = <span class="kw">await</span> <span class="fn">loadUserProfile</span>(firebaseUser.uid);
+    <span class="fn">setUser</span>(prev => ({ ...prev, ...fsProfile }));
+});</code></pre>
+
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>Zero backend code</strong> — Firebase handles password hashing, JWT tokens, session refresh</li>
+    <li><strong>Google Sign-In</strong> — One-click login with Google OAuth</li>
+    <li><strong>Password reset</strong> — Built-in email-based reset flow</li>
+    <li><strong>onAuthStateChanged</strong> — Real-time listener detects login/logout across tabs</li>
+  </ul>
+
+  <hr>
+
+  <h2 class="tool-title">4.2 Cloud Firestore (NoSQL Database)</h2>
+  <h3>Where it is used</h3>
+  <table>
+    <thead><tr><th>File</th><th>Functions Used</th><th>Data Stored</th></tr></thead>
+    <tbody>
+      <tr><td>firestoreService.js</td><td><code>setDoc</code>, <code>getDoc</code>, <code>addDoc</code>, <code>getDocs</code>, <code>deleteDoc</code>, <code>updateDoc</code>, <code>query</code>, <code>orderBy</code></td><td>All per-user data</td></tr>
+      <tr><td>AuthContext.jsx</td><td><code>saveUserProfile()</code>, <code>loadUserProfile()</code></td><td>User profiles</td></tr>
+      <tr><td>StudentProgressContext.jsx</td><td><code>saveProgress()</code>, <code>loadProgress()</code></td><td>Study analytics</td></tr>
+      <tr><td>NotesGenerator.jsx</td><td><code>saveNote()</code>, <code>loadNotes()</code>, <code>deleteNote()</code></td><td>Saved notes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Firestore Data Schema</h3>
+  <pre><code>users/{uid}/data/profile    → { name, email, course, photoURL, stats }
+users/{uid}/data/progress   → { quizResults[], flashcardSessions[], dailyActivity{} }
+users/{uid}/notes/{noteId}  → { title, topic, content, quiz[], flashcards[] }
+users/{uid}/uploads/{fileId}→ { name, url, storagePath, size, type }</code></pre>
+
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>Serverless</strong> — No database server to provision or manage</li>
+    <li><strong>Real-time</strong> — Live listeners for profile sync</li>
+    <li><strong>Offline persistence</strong> — Built-in offline cache</li>
+    <li><strong>Cross-device sync</strong> — Progress syncs automatically across devices</li>
+  </ul>
+
+  <hr>
+
+  <h2 class="tool-title">4.3 Firebase Storage</h2>
+  <p>Cloud object storage for user-uploaded files (PDFs, profile photos).</p>
+  <table>
+    <thead><tr><th>File</th><th>Functions Used</th><th>Stored</th></tr></thead>
+    <tbody>
+      <tr><td>storageService.js</td><td><code>ref</code>, <code>uploadBytesResumable</code>, <code>getDownloadURL</code>, <code>deleteObject</code></td><td>Study docs, photos</td></tr>
+    </tbody>
+  </table>
+  <pre><code><span class="kw">const</span> task = <span class="fn">uploadBytesResumable</span>(storageRef, file);
+task.<span class="fn">on</span>(<span class="str">'state_changed'</span>, (snap) => {
+    <span class="kw">const</span> percent = Math.<span class="fn">round</span>((snap.bytesTransferred / snap.totalBytes) * <span class="num">100</span>);
+    onProgress?.(percent);  <span class="cm">// Show upload progress bar</span>
+});</code></pre>
+
+  <hr>
+
+  <h2 class="tool-title">4.4 Firebase Hosting</h2>
+  <p>Static hosting with global CDN, SSL, and SPA rewrites. Configured in <code>firebase.json</code> to serve the <code>dist/</code> directory. Deploy: <code>firebase deploy --only hosting</code>.</p>
+</div>
+
+<!-- ═══════════════ SECTION 5 ═══════════════════ -->
+<div class="page page-break">
+  <h1 class="section-title">5. AI / LLM Providers</h1>
+
+  <h2 class="tool-title">5.1 Groq Cloud API (Primary AI Provider)</h2>
+  <table class="info-table">
+    <tr><td>API URL</td><td><code>https://api.groq.com/openai/v1/chat/completions</code></td></tr>
+    <tr><td>Text Model</td><td><code>llama-3.3-70b-versatile</code> (primary), <code>llama-3.1-8b-instant</code>, <code>gemma2-9b-it</code></td></tr>
+    <tr><td>Vision Model</td><td><code>meta-llama/llama-4-scout-17b-16e-instruct</code></td></tr>
+    <tr><td>Auth</td><td>Bearer token via <code>VITE_GROQ_API_KEY</code></td></tr>
+  </table>
+
+  <h3>What it is</h3>
+  <p>Groq runs LLMs on custom LPU hardware at 400+ tokens/sec — the fastest inference available.</p>
+
+  <h3>Where it is used</h3>
+  <table>
+    <thead><tr><th>File</th><th>What Groq Does</th></tr></thead>
+    <tbody>
+      <tr><td>aiService.js</td><td><code>chatCompletion()</code> — general text AI; <code>analyzeImageWithVision()</code> — medical image analysis</td></tr>
+      <tr><td>geminiService.js</td><td><code>groqChat()</code> — Notes generation, case explanations, doubt chat</td></tr>
+      <tr><td>aiQuizService.js</td><td>Quiz + flashcard generation via <code>chatCompletion()</code></td></tr>
+      <tr><td>translationService.js</td><td><code>translateViaGroq()</code> — Translation to Hindi, Telugu, Tamil, Bengali, Marathi</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Features powered by Groq</h3>
+  <table>
+    <thead><tr><th>Feature</th><th>Model</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Notes Generator</td><td>llama-3.3-70b</td><td>Structured 7-section medical notes</td></tr>
+      <tr><td>Quiz & Flashcards</td><td>llama-3.3-70b</td><td>USMLE-level MCQs + recall cards</td></tr>
+      <tr><td>Doubt Chat</td><td>llama-3.3-70b</td><td>Answer medical questions</td></tr>
+      <tr><td>Differential Diagnosis</td><td>llama-3.3-70b</td><td>AI-powered DDx from symptoms</td></tr>
+      <tr><td>Disease Comparison</td><td>llama-3.3-70b</td><td>Side-by-side comparisons</td></tr>
+      <tr><td>CDSS</td><td>llama-3.3-70b</td><td>Clinical reasoning explanations</td></tr>
+      <tr><td>Medical Image Analysis</td><td>llama-4-scout-17b</td><td>Multimodal image analysis</td></tr>
+      <tr><td>Translation</td><td>llama-3.3-70b</td><td>Indian language translation</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>Speed</strong> — 400+ tokens/sec, fastest LLM inference available</li>
+    <li><strong>Free tier</strong> — Generous request limits for academic projects</li>
+    <li><strong>OpenAI-compatible API</strong> — Same <code>chat/completions</code> format</li>
+    <li><strong>Model quality</strong> — LLaMA 3.3 70B excels at medical knowledge</li>
+    <li><strong>Vision</strong> — LLaMA 4 Scout supports multimodal (text + images)</li>
+    <li><strong>Rate-limit resilience</strong> — Automatic fallthrough: 70B → 8B → 9B</li>
+  </ul>
+
+  <hr>
+
+  <h2 class="tool-title">5.2 HuggingFace API (Fallback AI + Image Generation)</h2>
+  <table class="info-table">
+    <tr><td>Text Models</td><td><code>BioMistral-7B</code>, <code>Mistral-7B-Instruct</code>, <code>TinyLlama-1.1B</code></td></tr>
+    <tr><td>Image Models</td><td><code>FLUX.1-schnell</code>, <code>SDXL-base-1.0</code>, <code>stable-diffusion-2-1</code></td></tr>
+    <tr><td>Translation</td><td><code>Helsinki-NLP/opus-mt-en-hi</code>, <code>Helsinki-NLP/opus-mt-en-mul</code></td></tr>
+  </table>
+  <table>
+    <thead><tr><th>File</th><th>What HuggingFace Does</th></tr></thead>
+    <tbody>
+      <tr><td>geminiService.js</td><td><code>huggingFaceChat()</code> — text generation fallback (BioMistral → Mistral → TinyLlama)</td></tr>
+      <tr><td>translationService.js</td><td><code>translateViaHuggingFace()</code> — Helsinki-NLP translation models</td></tr>
+      <tr><td>routers/anatomy.py</td><td>Anatomy image generation — FLUX / SDXL / SD 2.1</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>BioMistral-7B</strong> — Medical domain-specialized model</li>
+    <li><strong>FLUX.1-schnell</strong> — Fast anatomy image generation (~4 inference steps)</li>
+    <li><strong>Model fallback chain</strong> — Auto-retries next model on 503 errors</li>
+    <li><strong>Helsinki-NLP</strong> — Language pairs for Indian languages</li>
+  </ul>
+
+  <hr>
+
+  <h2 class="tool-title">5.3 Ollama (Local LLM Fallback)</h2>
+  <table class="info-table">
+    <tr><td>API URL</td><td><code>http://localhost:11434</code></td></tr>
+    <tr><td>Models</td><td><code>llama3</code> (text), <code>llava</code> (vision), <code>mistral</code> (backend)</td></tr>
+    <tr><td>Type</td><td>Local LLM runtime — no internet required</td></tr>
+  </table>
+  <table>
+    <thead><tr><th>File</th><th>How Ollama Is Used</th></tr></thead>
+    <tbody>
+      <tr><td>aiService.js</td><td>Text & vision fallback via <code>/api/chat</code></td></tr>
+      <tr><td>geminiService.js</td><td><code>ollamaChat()</code> — final fallback for notes, chat</td></tr>
+      <tr><td>translationService.js</td><td><code>translateViaOllama()</code> — local translation</td></tr>
+      <tr><td>ollama_service.py</td><td>Backend pipeline: notes, summary, flashcards, quiz from transcripts</td></tr>
+    </tbody>
+  </table>
+  <h3>Why it was chosen</h3>
+  <ul>
+    <li><strong>Offline capability</strong> — Works without internet</li>
+    <li><strong>No API key</strong> — Zero cost, no rate limits</li>
+    <li><strong>Privacy</strong> — All data stays on the local machine</li>
+  </ul>
+</div>
+
+<!-- ═══════════════ SECTION 6 ═══════════════════ -->
+<div class="page page-break">
+  <h1 class="section-title">6. Document Parsing Libraries</h1>
+
+  <h2 class="tool-title">6.1 pdfjs-dist (PDF Parsing)</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>5.4.624</td></tr>
+    <tr><td>Package</td><td><code>pdfjs-dist</code></td></tr>
+  </table>
+  <p>Mozilla's PDF.js — extracts text from PDFs directly in the browser. Used in <code>fileParser.js → parsePdfFile()</code>.</p>
+
+  <pre><code><span class="kw">const</span> pdfjsLib = <span class="kw">await</span> <span class="fn">import</span>(<span class="str">'pdfjs-dist'</span>);
+<span class="kw">const</span> pdf = <span class="kw">await</span> pdfjsLib.<span class="fn">getDocument</span>({ data: <span class="kw">new</span> Uint8Array(arrayBuffer) }).promise;
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">1</span>; i <= pdf.numPages; i++) {
+    <span class="kw">const</span> page = <span class="kw">await</span> pdf.<span class="fn">getPage</span>(i);
+    <span class="kw">const</span> content = <span class="kw">await</span> page.<span class="fn">getTextContent</span>();
+    fullText += content.items.<span class="fn">map</span>(item => item.str).<span class="fn">join</span>(<span class="str">' '</span>);
+}</code></pre>
+  <ul>
+    <li><strong>Client-side</strong> — No server upload needed</li>
+    <li><strong>Web Worker</strong> — Parsing in a background thread (UI stays responsive)</li>
+    <li><strong>CDN fallback</strong> — Auto-loads from jsdelivr if local worker fails</li>
+  </ul>
+
+  <hr>
+
+  <h2 class="tool-title">6.2 mammoth.js (DOCX Parsing)</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>1.11.0</td></tr>
+    <tr><td>Package</td><td><code>mammoth</code></td></tr>
+  </table>
+  <p>Extracts raw text from Word (.docx) files in the browser. Used in <code>fileParser.js → parseDocxFile()</code>.</p>
+  <pre><code><span class="kw">const</span> mammoth = <span class="kw">await</span> <span class="fn">import</span>(<span class="str">'mammoth'</span>);
+<span class="kw">const</span> result = <span class="kw">await</span> mammoth.<span class="fn">extractRawText</span>({ arrayBuffer });
+<span class="kw">return</span> result.value;</code></pre>
+
+  <hr>
+
+  <h2 class="tool-title">6.3 FileReader API (Text / PPTX)</h2>
+  <p>Built-in browser API — handles <code>.txt</code>, <code>.md</code>, <code>.csv</code> files and basic PPTX XML extraction in <code>fileParser.js</code>. No extra library needed.</p>
+</div>
+
+<!-- ═══════════════ SECTIONS 7-8 ═══════════════ -->
+<div class="page page-break">
+  <h1 class="section-title">7. Data Visualization & Charting</h1>
+
+  <h2 class="tool-title">7.1 Recharts</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>3.7.0</td></tr>
+    <tr><td>Type</td><td>React charting library (SVG-based, built on D3)</td></tr>
+  </table>
+  <p>Used in <code>AnalyticsPage.jsx</code> for 30-day activity charts and topic accuracy charts. Charts are React components (<code>&lt;BarChart&gt;</code>, <code>&lt;LineChart&gt;</code>).</p>
+
+  <hr>
+
+  <h2 class="tool-title">7.2 Chart.js + react-chartjs-2</h2>
+  <table class="info-table">
+    <tr><td>Versions</td><td>chart.js 4.5.1, react-chartjs-2 5.3.1</td></tr>
+    <tr><td>Type</td><td>Canvas-based charting</td></tr>
+  </table>
+  <p>Used in <code>AnalyticsPage.jsx</code> for pie/doughnut charts. Complements Recharts — Recharts for bar/line, Chart.js for pie/doughnut.</p>
+
+  <hr>
+
+  <h1 class="section-title">8. PDF Export</h1>
+
+  <h2 class="tool-title">8.1 jsPDF</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>4.2.0</td></tr>
+  </table>
+  <p>Generates PDF documents in the browser. Used in <code>exportUtils.js</code> for three functions:</p>
+  <ul>
+    <li><code>exportNotesPDF()</code> — Study notes → PDF</li>
+    <li><code>exportFlashcardsPDF()</code> — Flashcard deck → PDF</li>
+    <li><code>exportQuizResultsPDF()</code> — Quiz results with answers → PDF</li>
+  </ul>
+
+  <hr>
+
+  <h2 class="tool-title">8.2 html2canvas</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>1.4.1</td></tr>
+  </table>
+  <p>Takes a "screenshot" of HTML elements by rendering DOM to Canvas. Used in <code>NotesGenerator.jsx</code> to capture CSS effects (gradients, glassmorphism) that jsPDF alone can't render.</p>
+</div>
+
+<!-- ═══════════════ SECTIONS 9-11 ══════════════ -->
+<div class="page page-break">
+  <h1 class="section-title">9. HTTP & Networking</h1>
+
+  <h2 class="tool-title">9.1 Fetch API (Browser Built-in)</h2>
+  <p>Every frontend AI service call uses native <code>fetch()</code>. Files: <code>aiService.js</code>, <code>geminiService.js</code>, <code>translationService.js</code>. Chosen over Axios for zero bundle size.</p>
+
+  <hr>
+
+  <h2 class="tool-title">9.2 httpx (Python Async HTTP)</h2>
+  <p>Used in <code>anatomy.py</code> for async HTTP calls to HuggingFace image generation API with 120-second timeout. Works with FastAPI's <code>async def</code> endpoints.</p>
+
+  <hr>
+
+  <h2 class="tool-title">9.3 requests (Python Sync HTTP)</h2>
+  <p>Used in <code>ollama_service.py</code> for synchronous calls to local Ollama LLM. 300-second timeout for long generation calls.</p>
+
+  <hr>
+
+  <h2 class="tool-title">9.4 CORS Middleware</h2>
+  <p>FastAPI middleware in <code>main.py</code> allowing frontend (port 5173) to call backend (port 8000).</p>
+
+  <hr>
+
+  <h1 class="section-title">10. State Management</h1>
+
+  <h2 class="tool-title">10.1 React Context API</h2>
+  <table>
+    <thead><tr><th>Context</th><th>File</th><th>Manages</th></tr></thead>
+    <tbody>
+      <tr><td>AuthContext</td><td>AuthContext.jsx</td><td>User auth, login/logout, profile, stats</td></tr>
+      <tr><td>ProgressContext</td><td>StudentProgressContext.jsx</td><td>Quiz results, flashcard sessions, daily activity</td></tr>
+    </tbody>
+  </table>
+  <p>Chosen over Redux/Zustand because only 2 global state slices exist — Context is sufficient and zero-dependency.</p>
+
+  <hr>
+
+  <h2 class="tool-title">10.2 localStorage (Offline Cache)</h2>
+  <p>Caches progress data for sub-millisecond reads. Firestore writes are debounced (2s delay) to reduce network calls.</p>
+
+  <pre><code><span class="cm">// Instant write to localStorage</span>
+localStorage.<span class="fn">setItem</span>(<span class="str">`medgenius_progress_${user.id}`</span>, JSON.<span class="fn">stringify</span>(data));
+
+<span class="cm">// Debounced Firestore write (2s)</span>
+<span class="fn">clearTimeout</span>(saveTimerRef.current);
+saveTimerRef.current = <span class="fn">setTimeout</span>(() => <span class="fn">saveProgress</span>(user.id, data), <span class="num">2000</span>);</code></pre>
+
+  <hr>
+
+  <h1 class="section-title">11. Routing</h1>
+  <h2 class="tool-title">11.1 Manual SPA Routing (useState)</h2>
+  <p><code>App.jsx</code> uses <code>useState('dashboard')</code> + a <code>switch</code> statement to render 16+ pages. <code>react-router-dom</code> v7.13.1 is installed for future URL-based routing.</p>
+</div>
+
+<!-- ═══════════════ SECTIONS 12-13 ═════════════ -->
+<div class="page page-break">
+  <h1 class="section-title">12. Python Backend Libraries</h1>
+
+  <h2 class="tool-title">12.1 python-dotenv</h2>
+  <p>Loads <code>.env</code> file in <code>main.py</code> via <code>load_dotenv()</code> for <code>HF_API_KEY</code>.</p>
+
+  <h2 class="tool-title">12.2 python-multipart</h2>
+  <p>Required by FastAPI for <code>UploadFile</code> handling in <code>lecture.py</code>.</p>
+
+  <h2 class="tool-title">12.3 threading (stdlib)</h2>
+  <p>Runs pipeline in background daemon threads in <code>runner.py</code> via <code>threading.Thread(target=..., daemon=True)</code>.</p>
+
+  <hr>
+
+  <h1 class="section-title">13. Development Tooling</h1>
+
+  <h2 class="tool-title">13.1 concurrently</h2>
+  <table class="info-table">
+    <tr><td>Version</td><td>9.2.1 (devDependency)</td></tr>
+  </table>
+  <p>Runs frontend AND backend simultaneously with a single command:</p>
+  <pre><code><span class="str">"dev:all"</span>: <span class="str">"concurrently --names FRONTEND,BACKEND \"vite\" \"cd medgenius-backend && uvicorn main:app --reload\""</span></code></pre>
+</div>
+
+<!-- ═══════════════ SECTION 14 — MATRIX ════════ -->
+<div class="page page-break">
+  <h1 class="section-title">14. Complete Tool Matrix</h1>
+  <table class="matrix-table">
+    <thead>
+      <tr><th>#</th><th>Tool</th><th>Version</th><th>Category</th><th>Where Used</th><th>Why Chosen</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><strong>React</strong></td><td>19.2.4</td><td>UI Framework</td><td>All components, pages, contexts</td><td>Component-based, hooks, ecosystem</td></tr>
+      <tr><td>2</td><td><strong>Vite</strong></td><td>7.3.1</td><td>Build Tool</td><td>Build, dev server, env vars</td><td>Sub-second startup, ESM, HMR</td></tr>
+      <tr><td>3</td><td><strong>FastAPI</strong></td><td>latest</td><td>Backend API</td><td>Anatomy proxy, lecture API</td><td>Async, Pydantic, auto-docs</td></tr>
+      <tr><td>4</td><td><strong>Uvicorn</strong></td><td>latest</td><td>ASGI Server</td><td>Runs FastAPI</td><td>Fast, auto-reload</td></tr>
+      <tr><td>5</td><td><strong>Firebase Auth</strong></td><td>12.11.0</td><td>Authentication</td><td>Login, signup, Google SSO</td><td>Zero-backend auth, OAuth</td></tr>
+      <tr><td>6</td><td><strong>Firestore</strong></td><td>12.11.0</td><td>NoSQL Database</td><td>Profiles, progress, notes</td><td>Serverless, real-time, offline</td></tr>
+      <tr><td>7</td><td><strong>Firebase Storage</strong></td><td>12.11.0</td><td>File Storage</td><td>PDFs, profile photos</td><td>Resumable uploads, CDN</td></tr>
+      <tr><td>8</td><td><strong>Firebase Hosting</strong></td><td>—</td><td>Static Hosting</td><td>Production deployment</td><td>Free CDN, SPA rewrites</td></tr>
+      <tr><td>9</td><td><strong>Groq API</strong></td><td>—</td><td>Cloud AI (Primary)</td><td>Notes, quiz, chat, diagnosis</td><td>Fastest inference, free tier</td></tr>
+      <tr><td>10</td><td><strong>HuggingFace API</strong></td><td>—</td><td>Cloud AI (Fallback)</td><td>Text fallback, anatomy images</td><td>BioMistral, FLUX image gen</td></tr>
+      <tr><td>11</td><td><strong>Ollama</strong></td><td>—</td><td>Local AI (Fallback)</td><td>Offline AI, backend pipeline</td><td>Free, offline, private</td></tr>
+      <tr><td>12</td><td><strong>pdfjs-dist</strong></td><td>5.4.624</td><td>PDF Parsing</td><td>Upload PDF study materials</td><td>Client-side, web worker</td></tr>
+      <tr><td>13</td><td><strong>mammoth</strong></td><td>1.11.0</td><td>DOCX Parsing</td><td>Upload Word documents</td><td>Client-side, clean text</td></tr>
+      <tr><td>14</td><td><strong>Recharts</strong></td><td>3.7.0</td><td>Charts (React)</td><td>Analytics bar/line charts</td><td>React components, responsive</td></tr>
+      <tr><td>15</td><td><strong>Chart.js</strong></td><td>4.5.1</td><td>Charts (Canvas)</td><td>Analytics pie/doughnut</td><td>Beautiful animations</td></tr>
+      <tr><td>16</td><td><strong>react-chartjs-2</strong></td><td>5.3.1</td><td>Chart wrapper</td><td>Analytics integration</td><td>React bindings for Chart.js</td></tr>
+      <tr><td>17</td><td><strong>jsPDF</strong></td><td>4.2.0</td><td>PDF Generation</td><td>Export notes/quiz/flashcards</td><td>Client-side, full formatting</td></tr>
+      <tr><td>18</td><td><strong>html2canvas</strong></td><td>1.4.1</td><td>Screenshot</td><td>Rich content → image for PDF</td><td>Captures CSS effects</td></tr>
+      <tr><td>19</td><td><strong>httpx</strong></td><td>latest</td><td>Async HTTP (Py)</td><td>HuggingFace image API</td><td>Async, long timeouts</td></tr>
+      <tr><td>20</td><td><strong>requests</strong></td><td>latest</td><td>Sync HTTP (Py)</td><td>Ollama LLM calls</td><td>Simple sync API</td></tr>
+      <tr><td>21</td><td><strong>Pydantic</strong></td><td>latest</td><td>Validation</td><td>Request body schemas</td><td>Auto-validation, type safety</td></tr>
+      <tr><td>22</td><td><strong>python-dotenv</strong></td><td>latest</td><td>Env Config</td><td>Load backend .env</td><td>Standard env management</td></tr>
+      <tr><td>23</td><td><strong>concurrently</strong></td><td>9.2.1</td><td>Dev Tooling</td><td>Run frontend + backend</td><td>Single command, labels</td></tr>
+      <tr><td>24</td><td><strong>Vanilla CSS</strong></td><td>—</td><td>Styling</td><td>All visual design</td><td>Full control, glassmorphism</td></tr>
+      <tr><td>25</td><td><strong>localStorage</strong></td><td>Browser</td><td>Offline Cache</td><td>Progress data cache</td><td>Instant reads, offline</td></tr>
+      <tr><td>26</td><td><strong>Fetch API</strong></td><td>Browser</td><td>HTTP Client</td><td>All frontend API calls</td><td>Zero bundle size, native</td></tr>
+    </tbody>
+  </table>
+
+  <div class="doc-footer">
+    <strong>MedGenius — AI-Powered Medical Learning Platform</strong><br>
+    Tools & Technologies Reference | 26 Tools | April 2026 | v1.0.0
+  </div>
+</div>
+
+</body>
+</html>

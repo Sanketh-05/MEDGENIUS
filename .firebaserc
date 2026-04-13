@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "medgenius-app": "medgenius-web"
+  },
+  "targets": {},
+  "etags": {}
+}

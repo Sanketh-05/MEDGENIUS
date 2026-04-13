@@ -1,0 +1,46 @@
+# ── Dependencies ───────────────────────────────────
+node_modules/
+
+# ── Environment Variables (API Keys - KEEP PRIVATE) ─
+.env
+.env.local
+.env.production
+medgenius-backend/.env
+
+# ── Build Output ───────────────────────────────────
+dist/
+build/
+build_output.txt
+build_output_utf8.txt
+
+# ── Python Virtual Environments ────────────────────
+.venv/
+venv/
+medgenius-backend/.venv/
+medgenius-backend/__pycache__/
+__pycache__/
+*.pyc
+
+# ── Firebase ───────────────────────────────────────
+.firebase/
+
+# ── IDE / Editor ───────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS Files ───────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Test Files ─────────────────────────────────────
+test_*.txt
+test_*.mjs
+
+# ── Logs ───────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── Temp Files ─────────────────────────────────────
+medgenius-backend/tmp/
